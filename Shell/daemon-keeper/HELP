@@ -1,0 +1,18 @@
+Deamon Keeper 1.0
+
+用法： 
+    dk -s <action> -f <file> -t <seconds> -d
+    dk -h
+    dk -v
+ln -s $DIR_CUR/dk /bin/dk
+例子：
+    eg1: nohup dk -s start -f ./jobs.txt -d -t 3 &
+    eg2: dk -s stop -f ./jobs.txt
+
+选项：
+    -s <action>         你要执行的动作。可能值：start, stop, restart.
+    -f <file>           待管理的job列表。
+    -t <second>         检查job列表的时间间隔。
+    -d                  作为守护进程。只有在 -s  设为start或者stop时才有效。
+    -v                  打印版本信息。
+    -h                  打印本文档。
