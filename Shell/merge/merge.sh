@@ -63,14 +63,18 @@ function _merge {
     _ear "$2 checkout $need_merge_branch"
     _ear "$2 pull origin $need_merge_branch"
     _ear "$2 checkout master"
-    _ear "$2 merge $need_merge_branch --no-ff -m 'merge $need_merge_branch'"
+
+    msg="merge $need_merge_branch"
+    $2 merge $need_merge_branch --no-ff -m "'$msg'"
+    _cecho "$2 merge $need_merge_branch --no-ff -m '$msg'" success
 
     result=$?
 
     if [ $result -eq 0 ];then
-        $2 push origin master
+        _ear "$2 push origin master"
     else
         _cecho "Merging failed" error
+        _unlock
         exit $errcode_merge_failed
     fi
 }
