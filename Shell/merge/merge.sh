@@ -2,7 +2,8 @@
 #
 # Merge develop to master for one repository.
 # Demo:
-#     merge-one.sh app-render
+#     merge.sh "app-render app-hf-xf" log
+#     merge.sh "app-render app-hf-xf" cmd
 
 # Get this script real path.
 function _current_path {
@@ -65,8 +66,8 @@ function _merge {
     _ear "$2 checkout master"
 
     msg="merge $need_merge_branch"
-    $2 merge $need_merge_branch --no-ff -m "'$msg'"
     _cecho "$2 merge $need_merge_branch --no-ff -m '$msg'" success
+    $2 merge $need_merge_branch --no-ff -m "'$msg'"
 
     result=$?
 
@@ -107,7 +108,7 @@ current_path=$(_current_path)
 
 _check_lock
 
-if [ ! $1 ];then
+if [ ! "$1" ];then
     _cecho 'Repository name is needed.' error
     exit $errcode_need_repo
 fi
@@ -118,17 +119,23 @@ else
     is_cmd=$2
 fi
 
-repo=$1
-repo_path=$code_path$repo
-
-if [ ! -d $repo_path ];then
-    _cecho "No such folder : $repo_path" error
-    exit $errcode_no_such_folder
-fi
-
-_cecho "Handle Repository: $repo" 
 _lock
-_merge $repo_path $git
+repos=$1
+
+for repo in $repos
+do
+    repo_path=$code_path$repo
+
+    if [ ! -d $repo_path ];then
+        _cecho "No such folder : $repo_path" error
+        _unlock
+        exit $errcode_no_such_folder
+    fi
+
+    _cecho "Handle Repository: $repo"
+    _merge $repo_path $git
+done
+
 _unlock
 
 # end of this file
