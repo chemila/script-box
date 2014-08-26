@@ -134,8 +134,11 @@ do
 
     _cecho "Handle Repository: $repo"
     _merge $repo_path $git
+    hr
 done
 
 _unlock
+
+_cecho "Finshed!"
 
 # end of this file
