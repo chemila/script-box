@@ -147,6 +147,6 @@ done
 
 _unlock
 
-_cecho "Finshed!"
+_cecho "Finished!"
 
 # end of this file
