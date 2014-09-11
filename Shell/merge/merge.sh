@@ -65,9 +65,9 @@ function _merge {
     _ear "$2 pull origin $need_merge_branch"
     _ear "$2 checkout master"
 
-    msg="merge $need_merge_branch"
-    _cecho "$2 merge $need_merge_branch --no-ff -m '$msg'" success
-    $2 merge $need_merge_branch --no-ff -m "'$msg'"
+    msg="merge $3"
+    _cecho "$2 merge $3 --no-ff -m '$msg'" success
+    $2 merge $3 --no-ff -m "'$msg'"
 
     result=$?
 
@@ -102,6 +102,7 @@ errcode_need_repo=1
 errcode_no_such_folder=2
 errcode_locked=3
 errcode_merge_failed=4
+errcode_branch_needed=5
 
 current_path=$(_current_path)
 . $current_path/config.sh
@@ -113,10 +114,17 @@ if [ ! "$1" ];then
     exit $errcode_need_repo
 fi
 
-if [ ! $2 ];then
+if [ ! "$2" ];then
+    _cecho 'Which branch would you like to merge?' error
+    exit $errcode_branch_needed
+fi
+
+branchname=$2
+
+if [ ! $3 ];then
     is_cmd="cmd"
 else
-    is_cmd=$2
+    is_cmd=$3
 fi
 
 _lock
@@ -133,7 +141,7 @@ do
     fi
 
     _cecho "Handle Repository: $repo"
-    _merge $repo_path $git
+    _merge $repo_path $git $branchname
     hr
 done
 
