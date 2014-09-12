@@ -142,7 +142,7 @@ do
 
     _cecho "Handle Repository: $repo"
     _merge $repo_path $git $branchname
-    hr
+    _cecho "#####################################################################"
 done
 
 _unlock
