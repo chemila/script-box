@@ -61,6 +61,7 @@ function _merge {
     _ear "$2 reset --hard"
     _ear "$2 checkout master"
     _ear "$2 pull origin master"
+    _ear "$2 fetch origin"
     _ear "$2 checkout $3"
     _ear "$2 pull origin $3"
     _ear "$2 checkout master"
